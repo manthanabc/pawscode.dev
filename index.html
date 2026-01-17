@@ -663,112 +663,7 @@
             line-height: 1.65;
         }
 
-        /* Comparison */
-        .comparison {
-            background: var(--bg-secondary);
-            padding: 10rem 2rem;
-        }
 
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 5rem;
-        }
-
-        .comparison-col {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: var(--radius-md);
-            padding: 3rem 1.75rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .comparison-col.paws {
-            background: rgba(20, 20, 29, 0.7);
-            border: 1px solid var(--accent);
-            box-shadow: 0 0 50px -10px var(--accent-glow);
-            transform: scale(1.05);
-            z-index: 10;
-        }
-
-        .comparison-col:hover {
-            transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.04);
-        }
-
-        .comparison-col.paws:hover {
-            transform: scale(1.05) translateY(-8px);
-        }
-
-        .tool-name {
-            font-size: 1.6rem;
-            font-weight: 800;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-            letter-spacing: -0.02em;
-        }
-
-        .paws .tool-name {
-            color: var(--accent);
-        }
-
-        .tool-badge {
-            display: inline-block;
-            background: rgba(99, 102, 241, 0.15);
-            color: var(--accent);
-            padding: 0.35rem 0.85rem;
-            border-radius: 999px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 2.5rem;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .comparison-features {
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-        }
-
-        .feature-item:last-child {
-            border-bottom: none;
-        }
-
-        .feature-icon-sm {
-            width: 22px;
-            height: 22px;
-            flex-shrink: 0;
-        }
-
-        .feature-icon-sm.yes {
-            color: var(--success);
-            filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
-        }
-
-        .feature-icon-sm.no {
-            color: #475569;
-            opacity: 0.5;
-        }
-
-        .feature-icon-sm.partial {
-            color: var(--warning);
-        }
 
         /* CLI Options */
         .cli-section {
@@ -1105,19 +1000,7 @@
                 gap: 4rem;
             }
 
-            .comparison-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2rem;
-            }
-            
-            .comparison-col.paws {
-                transform: none;
-                order: -1;
-            }
-            
-            .comparison-col.paws:hover {
-                transform: translateY(-8px);
-            }
+
         }
 
         @media (max-width: 768px) {
@@ -1158,9 +1041,7 @@
                 justify-content: center;
             }
 
-            .comparison-grid {
-                grid-template-columns: 1fr;
-            }
+
 
             .use-cases-grid,
             .features-grid,
@@ -1241,7 +1122,7 @@
         /* Automatic staggering for grids */
         .use-case-card.reveal,
         .feature-card.reveal,
-        .comparison-col.reveal,
+
         .config-block.reveal,
         .provider-badge.reveal {
             transition-delay: 0ms;
@@ -1249,7 +1130,7 @@
 
         .use-case-card.reveal:nth-child(2),
         .feature-card.reveal:nth-child(2),
-        .comparison-col.reveal:nth-child(2),
+
         .config-block.reveal:nth-child(2),
         .provider-badge.reveal:nth-child(2n) {
             transition-delay: 100ms;
@@ -1257,7 +1138,7 @@
 
         .use-case-card.reveal:nth-child(3),
         .feature-card.reveal:nth-child(3),
-        .comparison-col.reveal:nth-child(3),
+
         .config-block.reveal:nth-child(3),
         .provider-badge.reveal:nth-child(3n) {
             transition-delay: 200ms;
@@ -1265,7 +1146,7 @@
 
         .use-case-card.reveal:nth-child(4),
         .feature-card.reveal:nth-child(4),
-        .comparison-col.reveal:nth-child(4),
+
         .config-block.reveal:nth-child(4),
         .provider-badge.reveal:nth-child(4n) {
             transition-delay: 300ms;
@@ -1385,7 +1266,6 @@
             <div class="nav-links">
                 <a href="#use-cases" class="nav-link">Use Cases</a>
                 <a href="#features" class="nav-link">Features</a>
-                <a href="#comparison" class="nav-link">Compare</a>
                 <a href="#cli" class="nav-link">CLI</a>
             </div>
             <button class="mobile-menu-btn" aria-label="Toggle menu">
@@ -1398,7 +1278,6 @@
         <div class="mobile-menu-overlay">
             <a href="#use-cases" class="mobile-nav-link">Use Cases</a>
             <a href="#features" class="mobile-nav-link">Features</a>
-            <a href="#comparison" class="mobile-nav-link">Compare</a>
             <a href="#cli" class="mobile-nav-link">CLI</a>
         </div>
     </header>
@@ -1586,137 +1465,7 @@
         </div>
     </section>
 
-    <section class="comparison" id="comparison">
-        <div class="section-container">
-            <div class="section-header reveal">
-                <span class="section-badge">Comparison</span>
-                <h2 class="section-title">Why Choose Paws?</h2>
-                <p class="section-subtitle">See how Paws compares to other AI coding assistants</p>
-            </div>
-            <div class="comparison-grid">
-                <div class="comparison-col paws reveal">
-                    <div class="tool-name">Paws</div>
-                    <span class="tool-badge">Simplest</span>
-                    <div class="comparison-features">
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                            <span>Zero config</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                            <span>Terminal native</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                            <span>500+ models</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                            <span>Open source</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                            <span>Lightweight</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                            <span>Fast setup</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="comparison-col reveal">
-                    <div class="tool-name">Claude Code</div>
-                    <div class="comparison-features">
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            <span>Complex setup</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                            <span>Terminal native</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            <span>Claude only</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            <span>Closed source</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            <span>Heavy</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                            <span>Medium</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="comparison-col reveal">
-                    <div class="tool-name">Codex</div>
-                    <div class="comparison-features">
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            <span>Complex setup</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            <span>IDE only</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            <span>OpenAI only</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            <span>Closed source</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            <span>Heavy</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            <span>Slow setup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="comparison-col reveal">
-                    <div class="tool-name">OpenCode</div>
-                    <div class="comparison-features">
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                            <span>Some config</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                            <span>Web + CLI</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                            <span>Multiple models</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                            <span>Partial</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                            <span>Medium</span>
-                        </div>
-                        <div class="feature-item">
-                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                            <span>Medium</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <section class="cli-section" id="cli">
         <div class="section-container">
