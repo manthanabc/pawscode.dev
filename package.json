@@ -1,0 +1,21 @@
+{
+  "name": "paws-website",
+  "version": "1.0.0",
+  "description": "Website for Paws - AI Terminal Assistant for Developers",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "paws",
+    "ai",
+    "terminal",
+    "assistant",
+    "website"
+  ],
+  "author": "Paws Team",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
