@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Paws - AI-powered terminal assistant for developers. Code faster, debug smarter with 500+ AI models.">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23ffffff' d='M256 64c-35.3 0-64 28.7-64 64s28.7 64 64 64 64-28.7 64-64-28.7-64-64-64zm-128 96c-35.3 0-64 28.7-64 64s28.7 64 64 64 64-28.7 64-64-28.7-64-64-64zm256 0c-35.3 0-64 28.7-64 64s28.7 64 64 64 64-28.7 64-64-28.7-64-64-64zM128 320c-35.3 0-64 28.7-64 64s28.7 64 64 64 64-28.7 64-64-28.7-64-64-64zm256 0c-35.3 0-64 28.7-64 64s28.7 64 64 64 64-28.7 64-64-28.7-64-64-64zm-128 96c-44.2 0-80 35.8-80 80v16c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32v-16c0-44.2-35.8-80-80-80z'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/png" href="/favicon-white.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -407,32 +407,80 @@
              opacity: 0.7;
         }
 
-        .hero-install {
-            background: rgba(99, 102, 241, 0.08);
-            border: 1px solid rgba(99, 102, 241, 0.25);
-            border-radius: var(--radius-md);
-            padding: 1.5rem 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.1);
+        .install-wrapper {
+            display: flex;
+            align-items: center;
         }
 
-        .install-label {
-            font-size: 0.875rem;
-            color: var(--accent);
+        .btn-install {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.1rem 2.25rem;
+            border-radius: var(--radius-sm);
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 0.75rem;
-        }
-
-        .install-command {
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-primary);
+            backdrop-filter: blur(5px);
             font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
-            font-size: 1.5rem;
+        }
+
+        .btn-install:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.6);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-install:active {
+            transform: translateY(0);
+        }
+
+        .btn-install.copied {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .install-icon {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .btn-install:hover .install-icon {
+            color: white;
+        }
+
+        .install-text {
+            font-size: 1.05rem;
             font-weight: 600;
-            color: #ffffff;
-            letter-spacing: -0.01em;
+        }
+
+        .copy-icon,
+        .copied-icon {
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .btn-install:hover .copy-icon {
+            color: white;
+        }
+
+        .btn-install.copied .copy-icon {
+            display: none;
+        }
+
+        .btn-install.copied .copied-icon {
+            display: block;
+            color: white;
         }
 
         .hero-terminal {
@@ -1320,11 +1368,14 @@
                     <span>Get Started</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"/></svg>
                 </a>
-                <a href="#use-cases" class="btn btn-secondary">See Use Cases</a>
-            </div>
-            <div class="hero-install reveal stagger-2">
-                <div class="install-label">Quick Install</div>
-                <div class="install-command">npx pawscode@latest</div>
+                <div class="install-wrapper">
+                    <button class="btn btn-install" id="copyInstallBtn" aria-label="Copy install command">
+                        <span class="install-icon">$</span>
+                        <span class="install-text">npx pawscode@latest</span>
+                        <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <svg class="copied-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </button>
+                </div>
             </div>
             <div class="hero-tags reveal stagger-3">
                 <span class="hero-tag">500+ Models</span>
@@ -1762,6 +1813,23 @@ FORGE_SHOW_TASK_STATS=true</code></pre>
             link.addEventListener('click', () => {
                 toggleMenu();
             });
+        });
+
+        // Copy install button
+        const copyInstallBtn = document.getElementById('copyInstallBtn');
+        const installCommand = 'npx pawscode@latest';
+
+        copyInstallBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(installCommand);
+                copyInstallBtn.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyInstallBtn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy!', err);
+            }
         });
     </script>
 </body>
