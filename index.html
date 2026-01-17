@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Paws - AI-powered terminal assistant for developers. Code faster, debug smarter with 500+ AI models.">
+    <title>Paws - AI Terminal Assistant for Developers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f17;
+            --bg-secondary: #181825;
+            --bg-card: #1a1a2e;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #818cf8;
+            --accent-hover: #6366f1;
+            --accent-glow: rgba(129, 140, 248, 0.15);
+            --border: #2d2d44;
+            --border-light: #3f3f5f;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --error: #f87171;
+            --header-height: 70px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--header-height);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Skip to content for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 1rem;
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 1000;
+            transition: top 0.3s;
+        }
+
+        .skip-link:focus {
+            top: 1rem;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: var(--header-height);
+            background: rgba(15, 15, 23, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent) 0%, #6366f1 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link:focus {
+            color: var(--accent);
+        }
+
+        .nav-link:hover::after,
+        .nav-link:focus::after {
+            transform: scaleX(1);
+        }
+
+        /* Hero */
+        .hero {
+            padding: calc(var(--header-height) + 4rem) 2rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, #6366f1 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            background: var(--bg-secondary);
+        }
+
+        .hero-tags {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-tag {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .hero-terminal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .terminal-header {
+            background: var(--bg-secondary);
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #f87171; }
+        .terminal-dot.yellow { background: #fbbf24; }
+        .terminal-dot.green { background: #34d399; }
+
+        .terminal-title {
+            margin-left: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .terminal-body {
+            padding: 1.5rem 1.25rem;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.4rem;
+            word-break: break-all;
+        }
+
+        .terminal-prompt {
+            color: var(--accent);
+            font-weight: 600;
+            user-select: none;
+        }
+
+        .terminal-command {
+            color: var(--text-primary);
+        }
+
+        .terminal-output {
+            color: var(--text-secondary);
+        }
+
+        .terminal-success {
+            color: var(--success);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 2rem;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--accent-glow);
+            color: var(--accent);
+            padding: 0.375rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Use Cases */
+        .use-cases {
+            background: var(--bg-secondary);
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .use-case-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .use-case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .use-case-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .use-case-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .use-case-card:focus-within {
+            border-color: var(--accent);
+            outline: 2px solid var(--accent);
+            outline-offset: -2px;
+        }
+
+        .use-case-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-glow);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .use-case-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.625rem;
+        }
+
+        .use-case-desc {
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            font-size: 0.95rem;
+        }
+
+        .use-case-example {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 0.75rem 1rem;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        /* Features */
+        .features-section {
+            background: var(--bg-primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            background: var(--bg-secondary);
+            transform: translateY(-2px);
+        }
+
+        .feature-card:focus-within {
+            border-color: var(--accent);
+            outline: 2px solid var(--accent);
+            outline-offset: -2px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-glow);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-name {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Comparison */
+        .comparison {
+            background: var(--bg-secondary);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .comparison-col {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .comparison-col.paws {
+            border: 2px solid var(--accent);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        .comparison-col:hover {
+            transform: translateY(-4px);
+        }
+
+        .tool-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .paws .tool-name {
+            color: var(--accent);
+        }
+
+        .tool-badge {
+            display: inline-block;
+            background: var(--accent-glow);
+            color: var(--accent);
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+        }
+
+        .comparison-features {
+            text-align: left;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.625rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon-sm {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .feature-icon-sm.yes {
+            color: var(--success);
+        }
+
+        .feature-icon-sm.no {
+            color: var(--border-light);
+        }
+
+        .feature-icon-sm.partial {
+            color: var(--warning);
+        }
+
+        /* CLI Options */
+        .cli-section {
+            background: var(--bg-primary);
+        }
+
+        .cli-table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            overflow-x: auto;
+        }
+
+        .cli-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .cli-table th,
+        .cli-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cli-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .cli-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cli-table tr:hover td {
+            background: var(--bg-secondary);
+        }
+
+        .cli-option {
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            color: var(--accent);
+            font-size: 0.85rem;
+        }
+
+        /* Providers */
+        .providers {
+            background: var(--bg-secondary);
+        }
+
+        .providers-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .provider-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.625rem 1.125rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .provider-badge:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Configuration */
+        .config-section {
+            background: var(--bg-primary);
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .config-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+        }
+
+        .config-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .config-content {
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.8rem;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            overflow-x: auto;
+            border: 1px solid var(--border);
+        }
+
+        .config-content code {
+            color: #a5b4fc;
+        }
+
+        /* MCP */
+        .mcp-section {
+            background: var(--bg-secondary);
+        }
+
+        .mcp-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .mcp-text h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .mcp-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .mcp-commands {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .mcp-command {
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .mcp-code-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+        }
+
+        .mcp-code-block h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .mcp-code-block pre {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .mcp-code-block .comment {
+            color: #6b7280;
+        }
+
+        .mcp-code-block .key {
+            color: var(--accent);
+        }
+
+        .mcp-code-block .string {
+            color: var(--success);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover,
+        .footer-link:focus {
+            color: var(--accent);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                padding-top: calc(var(--header-height) + 3rem);
+            }
+
+            .comparison-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mcp-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .section-header {
+                margin-bottom: 3rem;
+            }
+
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cli-table-container {
+                border-radius: 12px;
+            }
+
+            .cli-table th,
+            .cli-table td {
+                padding: 0.875rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+
+            .hero {
+                padding-top: calc(var(--header-height) + 2rem);
+            }
+
+            .hero-tags {
+                gap: 0.5rem;
+            }
+
+            .hero-tag {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .use-case-card,
+            .feature-card,
+            .config-block {
+                padding: 1.25rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#hero" class="skip-link">Skip to content</a>
+
+    <header>
+        <nav class="nav">
+            <a href="#hero" class="logo">
+                <div class="logo-icon">🐾</div>
+                Paws
+            </a>
+            <div class="nav-links">
+                <a href="#use-cases" class="nav-link">Use Cases</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#comparison" class="nav-link">Compare</a>
+                <a href="#cli" class="nav-link">CLI</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div>
+                <h1>AI-Powered Terminal Assistant</h1>
+                <p>Code faster, debug smarter, and refactor effortlessly. Paws understands your entire codebase and helps you work without leaving your terminal.</p>
+                <div class="hero-actions">
+                    <a href="https://github.com/manthanabc/paws" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                        <span>Get Started</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"/></svg>
+                    </a>
+                    <a href="#use-cases" class="btn btn-secondary">See Use Cases</a>
+                </div>
+                <div class="hero-tags">
+                    <span class="hero-tag">500+ Models</span>
+                    <span class="hero-tag">Zero Config</span>
+                    <span class="hero-tag">Secure</span>
+                    <span class="hero-tag">Open Source</span>
+                </div>
+            </div>
+            <div class="hero-terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <div class="terminal-dot red"></div>
+                        <div class="terminal-dot yellow"></div>
+                        <div class="terminal-dot green"></div>
+                    </div>
+                    <span class="terminal-title">~/project</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$</span> <span class="terminal-command">paws</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-output">&gt; Can you explain how to authentication system works?</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-output">Analyzing project structure...</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-output">Found auth-related files: src/auth/*, middleware/auth.ts</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-success">✓ Analysis complete. The auth system uses JWT tokens with refresh rotation...</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$</span> <span class="terminal-command">paws -p "Add error handling to this function"</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="use-cases" id="use-cases">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-badge">Use Cases</span>
+                <h2 class="section-title">What Can You Do With Paws?</h2>
+                <p class="section-subtitle">Practical solutions for everyday development challenges</p>
+            </div>
+            <div class="use-cases-grid">
+                <article class="use-case-card">
+                    <div class="use-case-icon">🔍</div>
+                    <h3 class="use-case-title">Code Understanding</h3>
+                    <p class="use-case-desc">Get detailed explanations of how systems work in your codebase, including component relationships and data flow.</p>
+                    <div class="use-case-example">"Explain how the authentication system works"</div>
+                </article>
+                <article class="use-case-card">
+                    <div class="use-case-icon">✨</div>
+                    <h3 class="use-case-title">Implement Features</h3>
+                    <p class="use-case-desc">Get suggestions and code for new features based on your existing project structure and patterns.</p>
+                    <div class="use-case-example">"Add a dark mode toggle to our React app"</div>
+                </article>
+                <article class="use-case-card">
+                    <div class="use-case-icon">🐛</div>
+                    <h3 class="use-case-title">Debug Issues</h3>
+                    <p class="use-case-desc">Analyze errors, identify potential causes in your code, and propose solutions.</p>
+                    <div class="use-case-example">"TypeError: Cannot read property 'map' of undefined"</div>
+                </article>
+                <article class="use-case-card">
+                    <div class="use-case-icon">👁️</div>
+                    <h3 class="use-case-title">Code Reviews</h3>
+                    <p class="use-case-desc">Analyze code for readability, performance, security, and maintainability improvements.</p>
+                    <div class="use-case-example">"Review src/components/UserProfile.js"</div>
+                </article>
+                <article class="use-case-card">
+                    <div class="use-case-icon">📚</div>
+                    <h3 class="use-case-title">Learn Technologies</h3>
+                    <p class="use-case-desc">Get tailored tutorials for integrating new technologies into your specific project.</p>
+                    <div class="use-case-example">"Integrate GraphQL into this Express app"</div>
+                </article>
+                <article class="use-case-card">
+                    <div class="use-case-icon">🗄️</div>
+                    <h3 class="use-case-title">Database Design</h3>
+                    <p class="use-case-desc">Design schemas, tables, relationships, indexes, and constraints for your project.</p>
+                    <div class="use-case-example">"Design a blog schema with users, posts, comments"</div>
+                </article>
+                <article class="use-case-card">
+                    <div class="use-case-icon">🔧</div>
+                    <h3 class="use-case-title">Refactor Code</h3>
+                    <p class="use-case-desc">Modernize legacy code with step-by-step refactoring guidance and implementation.</p>
+                    <div class="use-case-example">"Refactor this class component to React Hooks"</div>
+                </article>
+                <article class="use-case-card">
+                    <div class="use-case-icon">🌿</div>
+                    <h3 class="use-case-title">Git Operations</h3>
+                    <p class="use-case-desc">Get help with git conflicts, merging, branching, and understanding differences.</p>
+                    <div class="use-case-example">"Resolve merge conflicts in feature/user-profile"</div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-badge">Features</span>
+                <h2 class="section-title">Built for Developers</h2>
+                <p class="section-subtitle">Powerful features that keep you in your flow</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-name">Streaming Tokens</h3>
+                    <p class="feature-desc">Real-time token streaming for instant feedback and smoother interactions</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 class="feature-name">Persistent Spinner</h3>
+                    <p class="feature-desc">Always know what's happening with a responsive status indicator</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-name">Smart Thinking Buffer</h3>
+                    <p class="feature-desc">Shows reasoning only when needed, in a finite preview window</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-name">Max Information Density</h3>
+                    <p class="feature-desc">UI optimized to show more information without clutter</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🗑️</div>
+                    <h3 class="feature-name">Auto-Erase Summary</h3>
+                    <p class="feature-desc">Summary automatically clears after next prompt to keep context fresh</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-name">Full History Access</h3>
+                    <p class="feature-desc">Switch conversations and see complete history instantly</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🖥️</div>
+                    <h3 class="feature-name">Adaptive Display</h3>
+                    <p class="feature-desc">Full screen refresh on resize for optimal viewing</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3 class="feature-name">Zero Configuration</h3>
+                    <p class="feature-desc">Just add your API key and you're ready to go</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3 class="feature-name">Secure by Design</h3>
+                    <p class="feature-desc">Your code stays on your machine, only API calls leave</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-name">Multi-Provider Support</h3>
+                    <p class="feature-desc">Use OpenAI, Anthropic, Google, or 500+ other providers</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-name">Custom Agents</h3>
+                    <p class="feature-desc">Create and use custom AI agents for specialized tasks</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔑</div>
+                    <h3 class="feature-name">Interactive Provider Login</h3>
+                    <p class="feature-desc">Easy credential management with <code>paws provider login</code></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="comparison" id="comparison">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-badge">Comparison</span>
+                <h2 class="section-title">Why Choose Paws?</h2>
+                <p class="section-subtitle">See how Paws compares to other AI coding assistants</p>
+            </div>
+            <div class="comparison-grid">
+                <div class="comparison-col paws">
+                    <div class="tool-name">Paws</div>
+                    <span class="tool-badge">Simplest</span>
+                    <div class="comparison-features">
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>Zero config</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>Terminal native</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>500+ models</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>Open source</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>Lightweight</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>Fast setup</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-col">
+                    <div class="tool-name">Claude Code</div>
+                    <div class="comparison-features">
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span>Complex setup</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>Terminal native</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span>Claude only</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span>Closed source</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span>Heavy</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <span>Medium</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-col">
+                    <div class="tool-name">Codex</div>
+                    <div class="comparison-features">
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span>Complex setup</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span>IDE only</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span>OpenAI only</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span>Closed source</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span>Heavy</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm no" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            <span>Slow setup</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-col">
+                    <div class="tool-name">OpenCode</div>
+                    <div class="comparison-features">
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <span>Some config</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <span>Web + CLI</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm yes" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>Multiple models</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <span>Partial</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <span>Medium</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-sm partial" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <span>Medium</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cli-section" id="cli">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-badge">CLI</span>
+                <h2 class="section-title">Command-Line Options</h2>
+                <p class="section-subtitle">Quick reference for Paws CLI commands</p>
+            </div>
+            <div class="cli-table-container">
+                <table class="cli-table">
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cli-option">-p, --prompt &lt;PROMPT&gt;</td>
+                            <td>Direct prompt to process without entering interactive mode</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-c, --command &lt;COMMAND&gt;</td>
+                            <td>Path to a file containing initial commands to execute</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-w, --workflow &lt;WORKFLOW&gt;</td>
+                            <td>Path to a file containing workflow to execute</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-e, --event &lt;EVENT&gt;</td>
+                            <td>Dispatch an event to workflow</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">--conversation &lt;CONVERSATION&gt;</td>
+                            <td>Path to a file containing conversation to execute</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-r, --restricted</td>
+                            <td>Enable restricted shell mode for enhanced security</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">--verbose</td>
+                            <td>Enable verbose output mode</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-h, --help</td>
+                            <td>Print help information</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-V, --version</td>
+                            <td>Print version</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="providers">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-badge">Providers</span>
+                <h2 class="section-title">Supported AI Providers</h2>
+                <p class="section-subtitle">Access 500+ models from multiple AI providers</p>
+            </div>
+            <div class="providers-grid">
+                <span class="provider-badge">OpenAI</span>
+                <span class="provider-badge">Anthropic</span>
+                <span class="provider-badge">Google Vertex AI</span>
+                <span class="provider-badge">Google Gemini</span>
+                <span class="provider-badge">Xiaomi</span>
+                <span class="provider-badge">AI Studio</span>
+                <span class="provider-badge">OpenCode Zen</span>
+                <span class="provider-badge">Copilot</span>
+                <span class="provider-badge">Antigravity</span>
+                <span class="provider-badge">xAI (Grok)</span>
+                <span class="provider-badge">Groq</span>
+                <span class="provider-badge">Cerebras</span>
+                <span class="provider-badge">IO Intelligence</span>
+                <span class="provider-badge">z.ai</span>
+                <span class="provider-badge">Requesty</span>
+                <span class="provider-badge">OpenRouter</span>
+                <span class="provider-badge">Amazon Bedrock</span>
+                <span class="provider-badge">+ 500+ more models</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="config-section">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-badge">Configuration</span>
+                <h2 class="section-title">Customize Paws</h2>
+                <p class="section-subtitle">Configure Paws behavior with paws.yaml and environment variables</p>
+            </div>
+            <div class="config-grid">
+                <div class="config-block">
+                    <h3 class="config-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        Custom Rules
+                    </h3>
+                    <div class="config-content">
+<pre><code>custom_rules: |
+  1. Always add comprehensive error handling
+  2. Include unit tests for all new functions
+  3. Follow naming convention: camelCase for vars</code></pre>
+                    </div>
+                </div>
+                <div class="config-block">
+                    <h3 class="config-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        Model Settings
+                    </h3>
+                    <div class="config-content">
+<pre><code>model: claude-3.7-sonnet
+temperature: 0.7
+max_walker_depth: 3
+max_requests_per_turn: 50
+max_tool_failure_per_turn: 3</code></pre>
+                    </div>
+                </div>
+                <div class="config-block">
+                    <h3 class="config-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        Custom Commands
+                    </h3>
+                    <div class="config-content">
+<pre><code>commands:
+  - name: "refactor"
+    description: "Refactor selected code"
+    prompt: "Improve readability and performance"</code></pre>
+                    </div>
+                </div>
+                <div class="config-block">
+                    <h3 class="config-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        Environment Variables
+                    </h3>
+                    <div class="config-content">
+<pre><code>FORGE_RETRY_MAX_ATTEMPTS=3
+FORGE_HTTP_READ_TIMEOUT=900
+FORGE_TOOL_TIMEOUT=300
+FORGE_MAX_CONVERSATIONS=100
+FORGE_SHOW_TASK_STATS=true</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mcp-section">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-badge">MCP</span>
+                <h2 class="section-title">Model Context Protocol</h2>
+                <p class="section-subtitle">Connect AI agents to external tools and services</p>
+            </div>
+            <div class="mcp-content">
+                <div class="mcp-text">
+                    <p>MCP allows Paws to communicate with external systems, enabling web browser automation, API interactions, and custom service integrations.</p>
+                    <h3>CLI Commands</h3>
+                    <div class="mcp-commands">
+                        <div class="mcp-command">paws mcp list - List all MCP servers</div>
+                        <div class="mcp-command">paws mcp add - Add a new server</div>
+                        <div class="mcp-command">paws mcp add-json - Add server via JSON</div>
+                        <div class="mcp-command">paws mcp get - Get server details</div>
+                        <div class="mcp-command">paws mcp remove - Remove a server</div>
+                    </div>
+                </div>
+                <div class="mcp-code-block">
+                    <h4>.mcp.json</h4>
+<pre><span class="comment">// MCP server configuration</span>
+{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"browser"</span>: {
+      <span class="key">"command"</span>: <span class="string">"npx"</span>,
+      <span class="key">"args"</span>: [<span class="string">"@modelcontextprotocol/server-puppeteer"</span>]
+    },
+    <span class="key">"filesystem"</span>: {
+      <span class="key">"command"</span>: <span class="string">"npx"</span>,
+      <span class="key">"args"</span>: [<span class="string">"@modelcontextprotocol/server-filesystem"</span>, <span class="string">"/path/to/files"</span>]
+    },
+    <span class="key">"custom_api"</span>: {
+      <span class="key">"url"</span>: <span class="string">"http://localhost:3000/events"</span>
+    }
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/manthanabc/paws" class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://github.com/manthanabc/paws/blob/main/README.md" class="footer-link" target="_blank" rel="noopener noreferrer">Documentation</a>
+            <a href="https://github.com/antimonyhq/forge" class="footer-link" target="_blank" rel="noopener noreferrer">Original Forge</a>
+        </div>
+        <p class="footer-text">Paws — AI Terminal Assistant for Developers</p>
+    </footer>
+</body>
+</html>

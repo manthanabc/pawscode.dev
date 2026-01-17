@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paws - AI Terminal Assistant for Developers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-section: #0d0d14;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.2);
+            --border: #27272a;
+            --border-hover: #3f3f46;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section - Now with substance */
+        .hero {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideIn 0.8s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.875rem 1.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+        }
+
+        .hero-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .hero-tag {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .hero-terminal {
+            opacity: 0;
+            transform: translateX(30px);
+            animation: slideIn 0.8s ease 0.2s forwards;
+        }
+
+        .terminal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .terminal-header {
+            background: var(--bg-section);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ef4444; }
+        .terminal-dot.yellow { background: #eab308; }
+        .terminal-dot.green { background: #22c55e; }
+
+        .terminal-title {
+            margin-left: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .terminal-body {
+            padding: 1.5rem;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.25rem;
+        }
+
+        .terminal-prompt {
+            color: var(--accent);
+        }
+
+        .terminal-command {
+            color: var(--text-primary);
+        }
+
+        .terminal-output {
+            color: var(--text-secondary);
+        }
+
+        .terminal-success {
+            color: #22c55e;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 2rem;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .section-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Use Cases Section */
+        .use-cases {
+            background: var(--bg-section);
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .use-case-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease;
+        }
+
+        .use-case-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .use-case-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .use-case-icon {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .use-case-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .use-case-example {
+            background: var(--bg-section);
+            border-left: 3px solid var(--accent);
+            padding: 0.75rem 1rem;
+            margin-top: 1rem;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Features Section */
+        .features-section {
+            background: var(--bg-dark);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-item {
+            padding: 1.25rem;
+            border-left: 2px solid var(--border);
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.4s ease;
+        }
+
+        .feature-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .feature-item:hover {
+            border-left-color: var(--accent);
+        }
+
+        .feature-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Command Line Options */
+        .cli-section {
+            background: var(--bg-section);
+        }
+
+        .cli-table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .cli-table-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cli-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cli-table th,
+        .cli-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cli-table th {
+            background: var(--bg-section);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .cli-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cli-table tr:hover td {
+            background: var(--bg-section);
+        }
+
+        .cli-option {
+            font-family: 'Monaco', 'Menlo', monospace;
+            color: var(--accent);
+        }
+
+        /* Providers Section */
+        .providers-section {
+            background: var(--bg-dark);
+        }
+
+        .providers-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .provider-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .provider-item.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .provider-item:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        /* Configuration Section */
+        .config-section {
+            background: var(--bg-section);
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .config-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease;
+        }
+
+        .config-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .config-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .config-content {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85rem;
+            background: var(--bg-section);
+            padding: 1rem;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            overflow-x: auto;
+        }
+
+        .config-content code {
+            color: #a5b4fc;
+        }
+
+        /* MCP Section */
+        .mcp-section {
+            background: var(--bg-dark);
+        }
+
+        .mcp-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .mcp-text {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease;
+        }
+
+        .mcp-text.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .mcp-code {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85rem;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.6s ease;
+        }
+
+        .mcp-code.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .mcp-code pre {
+            color: var(--text-secondary);
+        }
+
+        .mcp-code .comment {
+            color: #6b7280;
+        }
+
+        .mcp-code .key {
+            color: var(--accent);
+        }
+
+        .mcp-code .string {
+            color: #34d399;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .mcp-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-terminal {
+                transform: translateY(30px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+
+            .hero-desc {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="logo">Paws</h1>
+                <p class="hero-desc">AI-powered terminal assistant that understands your codebase. Write, debug, and refactor code without leaving your terminal.</p>
+                <div class="hero-actions">
+                    <a href="https://github.com/manthanabc/paws" class="btn btn-primary" target="_blank">Get Started</a>
+                    <a href="#use-cases" class="btn btn-secondary">See Use Cases</a>
+                </div>
+                <div class="hero-features">
+                    <span class="hero-tag">500+ Models</span>
+                    <span class="hero-tag">Zero Config</span>
+                    <span class="hero-tag">Secure</span>
+                    <span class="hero-tag">Open Source</span>
+                </div>
+            </div>
+            <div class="hero-terminal">
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <div class="terminal-dot red"></div>
+                            <div class="terminal-dot yellow"></div>
+                            <div class="terminal-dot green"></div>
+                        </div>
+                        <span class="terminal-title">~/project</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">$</span> <span class="terminal-command">paws</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-output">&gt; Can you explain how the authentication system works?</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-output">Analyzing project structure...</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-output">Found auth-related files: src/auth/*, middleware/auth.ts</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-success">✓ Analysis complete. The auth system uses JWT tokens...</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">$</span> <span class="terminal-command">paws -p "Add error handling to this function"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="use-cases" id="use-cases">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">What Can You Do With Paws?</h2>
+                <p class="section-subtitle">Practical use cases for everyday development tasks</p>
+            </div>
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <div class="use-case-icon">🔍</div>
+                    <h3 class="use-case-title">Code Understanding</h3>
+                    <p class="feature-desc">Get detailed explanations of how systems work in your codebase, including component relationships and data flow.</p>
+                    <div class="use-case-example">"Explain how the authentication system works"</div>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">✨</div>
+                    <h3 class="use-case-title">Implement Features</h3>
+                    <p class="feature-desc">Get suggestions and code for new features based on your existing project structure and patterns.</p>
+                    <div class="use-case-example">"Add a dark mode toggle to our React app"</div>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🐛</div>
+                    <h3 class="use-case-title">Debug Issues</h3>
+                    <p class="feature-desc">Analyze errors, identify potential causes in your code, and propose solutions.</p>
+                    <div class="use-case-example">"TypeError: Cannot read property 'map' of undefined"</div>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">👁️</div>
+                    <h3 class="use-case-title">Code Reviews</h3>
+                    <p class="feature-desc">Analyze code for readability, performance, security, and maintainability improvements.</p>
+                    <div class="use-case-example">"Review src/components/UserProfile.js"</div>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">📚</div>
+                    <h3 class="use-case-title">Learn Technologies</h3>
+                    <p class="feature-desc">Get tailored tutorials for integrating new technologies into your specific project.</p>
+                    <div class="use-case-example">"Integrate GraphQL into this Express app"</div>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🗄️</div>
+                    <h3 class="use-case-title">Database Design</h3>
+                    <p class="feature-desc">Design schemas, tables, relationships, indexes, and constraints for your project.</p>
+                    <div class="use-case-example">"Design a blog schema with users, posts, comments"</div>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🔧</div>
+                    <h3 class="use-case-title">Refactor Code</h3>
+                    <p class="feature-desc">Modernize legacy code with step-by-step refactoring guidance and implementation.</p>
+                    <div class="use-case-example">"Refactor this class component to React Hooks"</div>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">🌿</div>
+                    <h3 class="use-case-title">Git Operations</h3>
+                    <p class="feature-desc">Get help with git conflicts, merging, branching, and understanding differences.</p>
+                    <div class="use-case-example">"Resolve merge conflicts in feature/user-profile"</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Key Features</h2>
+                <p class="section-subtitle">Built for developers who want AI assistance without leaving their workflow</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-name">Streaming Tokens</div>
+                    <p class="feature-desc">Real-time token streaming for instant feedback and smoother interactions</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Persistent Spinner</div>
+                    <p class="feature-desc">Always know what's happening with a responsive status indicator</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Smart Thinking Buffer</div>
+                    <p class="feature-desc">Shows reasoning only when needed, in a finite preview window</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Max Information Density</div>
+                    <p class="feature-desc">UI optimized to show more information without clutter</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Auto-Erase Summary</div>
+                    <p class="feature-desc">Summary automatically clears after next prompt to keep context fresh</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Full History Access</div>
+                    <p class="feature-desc">Switch conversations and see complete history instantly</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Adaptive Display</div>
+                    <p class="feature-desc">Full screen refresh on resize for optimal viewing</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Zero Configuration</div>
+                    <p class="feature-desc">Just add your API key and you're ready to go</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Secure by Design</div>
+                    <p class="feature-desc">Your code stays on your machine, only API calls leave</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Multi-Provider Support</div>
+                    <p class="feature-desc">Use OpenAI, Anthropic, Google, or 500+ other providers</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Custom Agents</div>
+                    <p class="feature-desc">Create and use custom AI agents for specialized tasks</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-name">Interactive Provider Login</div>
+                    <p class="feature-desc">Easy credential management with `paws provider login`</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLI Options Section -->
+    <section class="cli-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Command-Line Options</h2>
+                <p class="section-subtitle">Quick reference for Paws CLI commands</p>
+            </div>
+            <div class="cli-table-container">
+                <table class="cli-table">
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cli-option">-p, --prompt &lt;PROMPT&gt;</td>
+                            <td>Direct prompt to process without entering interactive mode</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-c, --command &lt;COMMAND&gt;</td>
+                            <td>Path to a file containing initial commands to execute</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-w, --workflow &lt;WORKFLOW&gt;</td>
+                            <td>Path to a file containing the workflow to execute</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-e, --event &lt;EVENT&gt;</td>
+                            <td>Dispatch an event to the workflow</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">--conversation &lt;CONVERSATION&gt;</td>
+                            <td>Path to a file containing the conversation to execute</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-r, --restricted</td>
+                            <td>Enable restricted shell mode for enhanced security</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">--verbose</td>
+                            <td>Enable verbose output mode</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-h, --help</td>
+                            <td>Print help information</td>
+                        </tr>
+                        <tr>
+                            <td class="cli-option">-V, --version</td>
+                            <td>Print version</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Providers Section -->
+    <section class="providers-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Supported Providers</h2>
+                <p class="section-subtitle">Access 500+ models from multiple AI providers</p>
+            </div>
+            <div class="providers-grid">
+                <div class="provider-item">OpenAI</div>
+                <div class="provider-item">Anthropic</div>
+                <div class="provider-item">Google Vertex AI</div>
+                <div class="provider-item">Google Gemini</div>
+                <div class="provider-item">Xiaomi</div>
+                <div class="provider-item">AI Studio</div>
+                <div class="provider-item">OpenCode Zen</div>
+                <div class="provider-item">Copilot</div>
+                <div class="provider-item">Antigravity</div>
+                <div class="provider-item">xAI (Grok)</div>
+                <div class="provider-item">Groq</div>
+                <div class="provider-item">Cerebras</div>
+                <div class="provider-item">IO Intelligence</div>
+                <div class="provider-item">z.ai</div>
+                <div class="provider-item">Requesty</div>
+                <div class="provider-item">OpenRouter</div>
+                <div class="provider-item">Amazon Bedrock</div>
+                <div class="provider-item">+ 500+ more models</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configuration Section -->
+    <section class="config-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Configuration</h2>
+                <p class="section-subtitle">Customize Paws behavior with paws.yaml and environment variables</p>
+            </div>
+            <div class="config-grid">
+                <div class="config-block">
+                    <h3 class="config-title">paws.yaml - Custom Rules</h3>
+                    <div class="config-content">
+<pre><code>custom_rules: |
+  1. Always add comprehensive error handling
+  2. Include unit tests for all new functions
+  3. Follow naming convention: camelCase for vars</code></pre>
+                    </div>
+                </div>
+                <div class="config-block">
+                    <h3 class="config-title">paws.yaml - Model Settings</h3>
+                    <div class="config-content">
+<pre><code>model: claude-3.7-sonnet
+temperature: 0.7
+max_walker_depth: 3
+max_requests_per_turn: 50
+max_tool_failure_per_turn: 3</code></pre>
+                    </div>
+                </div>
+                <div class="config-block">
+                    <h3 class="config-title">paws.yaml - Custom Commands</h3>
+                    <div class="config-content">
+<pre><code>commands:
+  - name: "refactor"
+    description: "Refactor selected code"
+    prompt: "Improve readability and performance"</code></pre>
+                    </div>
+                </div>
+                <div class="config-block">
+                    <h3 class="config-title">Environment Variables</h3>
+                    <div class="config-content">
+<pre><code>FORGE_RETRY_MAX_ATTEMPTS=3
+FORGE_HTTP_READ_TIMEOUT=900
+FORGE_TOOL_TIMEOUT=300
+FORGE_MAX_CONVERSATIONS=100
+FORGE_SHOW_TASK_STATS=true</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MCP Section -->
+    <section class="mcp-section">
+        <div class="section-container">
+            <div class="mcp-content">
+                <div class="mcp-text">
+                    <div class="section-header">
+                        <h2 class="section-title">Model Context Protocol (MCP)</h2>
+                        <p class="section-subtitle">Connect AI agents to external tools and services</p>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        MCP allows Paws to communicate with external systems, enabling web browser automation, API interactions, and custom service integrations.
+                    </p>
+                    <div style="margin-bottom: 2rem;">
+                        <h4 style="margin-bottom: 0.75rem; font-weight: 600;">CLI Commands:</h4>
+                        <div style="font-family: 'Monaco', 'Menlo', monospace; font-size: 0.9rem; color: var(--text-secondary);">
+                            <div>paws mcp list - List all MCP servers</div>
+                            <div>paws mcp add - Add a new server</div>
+                            <div>paws mcp add-json - Add server via JSON</div>
+                            <div>paws mcp get - Get server details</div>
+                            <div>paws mcp remove - Remove a server</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mcp-code">
+                    <h3 style="margin-bottom: 1rem; font-weight: 600; color: var(--text-primary);">.mcp.json</h3>
+<pre><span class="comment">// MCP server configuration</span>
+{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"browser"</span>: {
+      <span class="key">"command"</span>: <span class="string">"npx"</span>,
+      <span class="key">"args"</span>: [<span class="string">"@modelcontextprotocol/server-puppeteer"</span>]
+    },
+    <span class="key">"filesystem"</span>: {
+      <span class="key">"command"</span>: <span class="string">"npx"</span>,
+      <span class="key">"args"</span>: [<span class="string">"@modelcontextprotocol/server-filesystem"</span>, <span class="string">"/path/to/files"</span>]
+    },
+    <span class="key">"custom_api"</span>: {
+      <span class="key">"url"</span>: <span class="string">"http://localhost:3000/events"</span>
+    }
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/manthanabc/paws" class="footer-link" target="_blank">GitHub</a>
+            <a href="https://github.com/manthanabc/paws/blob/main/README.md" class="footer-link" target="_blank">Documentation</a>
+            <a href="https://github.com/antimonyhq/forge" class="footer-link" target="_blank">Original Forge</a>
+        </div>
+        <p class="footer-text">Paws — AI Terminal Assistant for Developers</p>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.section-header, .use-case-card, .feature-item, .cli-table-container, .provider-item, .config-block, .mcp-text, .mcp-code').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Stagger animations
+        const useCaseCards = document.querySelectorAll('.use-case-card');
+        useCaseCards.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.08}s`;
+        });
+
+        const featureItems = document.querySelectorAll('.feature-item');
+        featureItems.forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.05}s`;
+        });
+
+        const providerItems = document.querySelectorAll('.provider-item');
+        providerItems.forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.04}s`;
+        });
+
+        const configBlocks = document.querySelectorAll('.config-block');
+        configBlocks.forEach((block, index) => {
+            block.style.transitionDelay = `${index * 0.1}s`;
+        });
+    </script>
+</body>
+</html>
