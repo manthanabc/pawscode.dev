@@ -1344,6 +1344,7 @@
                 <a href="#use-cases" class="nav-link">Use Cases</a>
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#cli" class="nav-link">CLI</a>
+                <a href="#antigravity" class="nav-link">Antigravity</a>
             </div>
             <button class="mobile-menu-btn" aria-label="Toggle menu">
                 <span></span>
@@ -1356,6 +1357,7 @@
             <a href="#use-cases" class="mobile-nav-link">Use Cases</a>
             <a href="#features" class="mobile-nav-link">Features</a>
             <a href="#cli" class="mobile-nav-link">CLI</a>
+            <a href="#antigravity" class="mobile-nav-link">Antigravity</a>
         </div>
     </header>
 
@@ -1700,6 +1702,63 @@ FORGE_SHOW_TASK_STATS=true</code></pre>
     }
   }
 }</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="config-section" id="antigravity">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-badge">Antigravity Proxy</span>
+                <h2 class="section-title">Run with Antigravity</h2>
+                <p class="section-subtitle">Route AI API requests through a centralized proxy service</p>
+            </div>
+            <div class="mcp-content">
+                <div class="mcp-text reveal">
+                    <p>Antigravity Claude Proxy is a proxy server that exposes an Anthropic-compatible API backed by Antigravity's Cloud Code, allowing you to use Claude and Gemini models.</p>
+                    <h3>Installation and Setup</h3>
+                    <div class="mcp-commands">
+                        <div class="mcp-command">npm install -g antigravity-claude-proxy@latest</div>
+                        <div class="mcp-command">antigravity-claude-proxy accounts add</div>
+                        <div class="mcp-command">antigravity-claude-proxy start</div>
+                    </div>
+                    <p style="margin-top: 2rem;">The proxy runs on <code style="background: rgba(255,255,255,0.1); padding: 0.25rem 0.5rem; border-radius: 4px;">http://localhost:8080</code> by default.</p>
+                </div>
+                <div class="mcp-code-block reveal">
+                    <h4>Configure Paws</h4>
+<pre><span class="comment"># Provider login from Paws</span>
+<span class="key">$</span> paws provider login
+
+<span class="comment"># Set base URL to use Antigravity proxy</span>
+<span class="key">$</span> export ANTHROPIC_BASE_URL=<span class="string">"http://localhost:8080"</span>
+
+<span class="comment"># Verify connection</span>
+<span class="key">$</span> paws <span class="string">"Hello, can you hear me?"</span></pre>
+                    <h4 style="margin-top: 2rem;">Account Management</h4>
+<pre><span class="comment"># Add account via Web Dashboard (Recommended)</span>
+<span class="comment"># Open http://localhost:8080 in browser</span>
+<span class="comment"># Navigate to Accounts tab and click Add Account</span>
+
+<span class="comment"># Or add account via CLI</span>
+<span class="key">$</span> antigravity-claude-proxy accounts add
+
+<span class="comment"># Check account status and quota</span>
+<span class="key">$</span> curl <span class="string">"http://localhost:8080/account-limits?format=table"</span></pre>
+<span class="key">providers</span>:
+  <span class="key">openai</span>:
+    <span class="key">api_key</span>: <span class="string">"dummy-key"</span>
+    <span class="key">base_url</span>: <span class="string">"http://localhost:3000/openai/v1"</span>
+
+<span class="comment"># Or use environment variables</span>
+<span class="comment"># export OPENAI_API_KEY="dummy-key"</span>
+<span class="comment"># export OPENAI_BASE_URL="http://localhost:3000/openai/v1"</span></pre>
+                    <h4 style="margin-top: 2rem;">Verify Connection</h4>
+<pre><span class="comment"># Test the connection</span>
+$ paws "Hello, can you hear me?"
+
+<span class="comment"># Stop the proxy when done</span>
+$ antigravity proxy stop</pre>
                 </div>
             </div>
         </div>
