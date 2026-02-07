@@ -22,9 +22,9 @@
             --bg-card: #14141d;
             --text-primary: #ffffff;
             --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --accent-glow: rgba(99, 102, 241, 0.2);
+            --accent: #0ea5e9;
+            --accent-hover: #0284c7;
+            --accent-glow: rgba(14, 165, 233, 0.2);
             --border: #272732;
             --border-light: #3f3f4e;
             --success: #10b981;
@@ -32,9 +32,9 @@
             --error: #ef4444;
             --header-height: 90px;
             --container-width: 1320px;
-            --radius-lg: 32px;
-            --radius-md: 20px;
-            --radius-sm: 10px;
+            --radius-lg: 16px;
+            --radius-md: 16px;
+            --radius-sm: 16px;
         }
 
         html {
@@ -46,8 +46,8 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
-                radial-gradient(circle at 90% 60%, rgba(139, 92, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 60%, rgba(20, 184, 166, 0.12) 0%, transparent 40%),
                 radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
             color: var(--text-primary);
             line-height: 1.7;
@@ -92,7 +92,7 @@
             right: -10%;
             width: 60vw;
             height: 60vw;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, transparent 70%);
             animation-delay: -5s;
             animation-duration: 25s;
         }
@@ -185,6 +185,13 @@
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-nav-link:hover {
+            color: var(--accent);
         }
 
         .mobile-menu-overlay.active .mobile-nav-link {
@@ -197,6 +204,8 @@
         .mobile-menu-overlay.active .mobile-nav-link:nth-child(2) { transition-delay: 0.2s; }
         .mobile-menu-overlay.active .mobile-nav-link:nth-child(3) { transition-delay: 0.3s; }
         .mobile-menu-overlay.active .mobile-nav-link:nth-child(4) { transition-delay: 0.4s; }
+        .mobile-menu-overlay.active .mobile-nav-link:nth-child(5) { transition-delay: 0.5s; }
+        .mobile-menu-overlay.active .mobile-nav-link:nth-child(6) { transition-delay: 0.6s; }
 
         /* Skip to content for accessibility */
         .skip-link {
@@ -225,11 +234,31 @@
             right: 0;
             z-index: 100;
             height: var(--header-height);
-            background: rgba(5, 5, 7, 0.6);
+            background: transparent;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            border-bottom: 1px solid transparent;
+        }
+
+        header.scrolled .logo {
+            opacity: 0;
+            transform: translateX(-20px);
+            pointer-events: none;
+        }
+
+        header.scrolled .nav-links-container {
+            transform: translateX(-44px);
+        }
+
+        header.scrolled .nav-links {
+            background: rgba(5, 5, 7, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            transition: all 0.3s ease;
         }
 
         .nav {
@@ -251,18 +280,14 @@
             align-items: center;
             gap: 1rem;
             letter-spacing: -0.02em;
+            transition: all 0.3s ease;
         }
 
-        .logo-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-            border-radius: 14px;
+        .nav-links-container {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 8px 20px var(--accent-glow);
+            gap: 0.5rem;
+            transition: all 0.3s ease;
         }
 
         .nav-links {
@@ -270,9 +295,10 @@
             gap: 0.5rem;
             background: rgba(255, 255, 255, 0.02);
             padding: 0.4rem;
-            border-radius: 999px;
+            border-radius: var(--radius-md);
             border: 1px solid rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .nav-link {
@@ -283,7 +309,10 @@
             transition: all 0.2s;
             position: relative;
             padding: 0.6rem 1.5rem;
-            border-radius: 999px;
+            border-radius: var(--radius-md);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .nav-link:hover,
@@ -292,8 +321,25 @@
             background: rgba(255, 255, 255, 0.06);
         }
 
+        .nav-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
         .nav-link::after {
             display: none;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 20px var(--accent-glow);
         }
 
         /* Hero */
@@ -389,7 +435,7 @@
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border);
             padding: 0.625rem 1.25rem;
-            border-radius: 999px;
+            border-radius: var(--radius-md);
             font-size: 0.875rem;
             color: var(--text-secondary);
             font-weight: 500;
@@ -423,19 +469,19 @@
             text-decoration: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            border: 1px solid rgba(99, 102, 241, 0.4);
-            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.4);
+            background: rgba(14, 165, 233, 0.1);
             color: var(--text-primary);
             backdrop-filter: blur(5px);
             font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
         }
 
         .btn-install:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: rgba(99, 102, 241, 0.6);
+            background: rgba(14, 165, 233, 0.2);
+            border-color: rgba(14, 165, 233, 0.6);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 20px -4px rgba(14, 165, 233, 0.3);
         }
 
         .btn-install:active {
@@ -491,7 +537,7 @@
             box-shadow:
                 0 0 0 1px rgba(0,0,0,0.4),
                 0 30px 60px -12px rgba(0, 0, 0, 0.6),
-                0 0 120px -20px rgba(99, 102, 241, 0.15);
+                0 0 120px -20px rgba(14, 165, 233, 0.15);
             position: relative;
         }
 
@@ -570,16 +616,16 @@
         .section-badge {
             display: inline-flex;
             align-items: center;
-            background: rgba(99, 102, 241, 0.08);
+            background: rgba(14, 165, 233, 0.08);
             color: var(--accent);
             padding: 0.5rem 1.25rem;
-            border-radius: 999px;
+            border-radius: var(--radius-md);
             font-size: 0.9rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            border: 1px solid rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(14, 165, 233, 0.15);
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
@@ -626,8 +672,25 @@
             flex-direction: column;
         }
 
+        .use-case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .use-case-card:hover::before {
+            transform: scaleX(1);
+        }
+
         .use-case-card:hover {
-            border-color: rgba(99, 102, 241, 0.25);
+            border-color: rgba(14, 165, 233, 0.25);
             transform: translateY(-8px);
             box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
             background: rgba(25, 25, 35, 0.8);
@@ -636,14 +699,14 @@
         .use-case-icon {
             width: 64px;
             height: 64px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05));
-            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(14, 165, 233, 0.05));
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
             margin-bottom: 2rem;
-            border: 1px solid rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(14, 165, 233, 0.15);
             color: var(--text-primary);
             box-shadow: 0 8px 16px -4px rgba(0,0,0,0.3);
         }
@@ -696,11 +759,30 @@
             padding: 2.5rem;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
         }
 
         .feature-card:hover {
-            border-color: rgba(99, 102, 241, 0.3);
-            background: rgba(99, 102, 241, 0.04);
+            border-color: rgba(14, 165, 233, 0.3);
+            background: rgba(14, 165, 233, 0.04);
             transform: translateY(-5px);
             box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.3);
         }
@@ -709,7 +791,7 @@
             width: 52px;
             height: 52px;
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -827,7 +909,7 @@
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06);
             padding: 0.85rem 1.75rem;
-            border-radius: 999px;
+            border-radius: var(--radius-md);
             font-size: 1rem;
             color: var(--text-secondary);
             font-weight: 500;
@@ -839,9 +921,9 @@
         .provider-badge:hover {
             border-color: var(--accent);
             color: white;
-            background: rgba(99, 102, 241, 0.15);
+            background: rgba(14, 165, 233, 0.15);
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.15);
         }
 
         /* Configuration */
@@ -867,7 +949,7 @@
 
         .config-block:hover {
             transform: translateY(-6px);
-            border-color: rgba(99, 102, 241, 0.2);
+            border-color: rgba(14, 165, 233, 0.2);
             box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
         }
 
@@ -955,7 +1037,7 @@
         }
 
         .mcp-command:hover {
-            border-color: rgba(99, 102, 241, 0.3);
+            border-color: rgba(14, 165, 233, 0.3);
             background: rgba(255, 255, 255, 0.04);
         }
 
@@ -1076,8 +1158,6 @@
                 grid-template-columns: 1fr;
                 gap: 4rem;
             }
-
-
         }
 
         @media (max-width: 768px) {
@@ -1100,6 +1180,10 @@
 
             .nav-links {
                 display: none;
+            }
+
+            .nav-links-container {
+                gap: 0;
             }
 
             .mobile-menu-btn {
@@ -1180,16 +1264,49 @@
             }
         }
 
-        /* Animations */
+        /* Scroll Animations */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(40px);
             transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
         }
 
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .stagger-1 { transition-delay: 100ms; }
@@ -1199,7 +1316,6 @@
         /* Automatic staggering for grids */
         .use-case-card.reveal,
         .feature-card.reveal,
-
         .config-block.reveal,
         .provider-badge.reveal {
             transition-delay: 0ms;
@@ -1207,7 +1323,6 @@
 
         .use-case-card.reveal:nth-child(2),
         .feature-card.reveal:nth-child(2),
-
         .config-block.reveal:nth-child(2),
         .provider-badge.reveal:nth-child(2n) {
             transition-delay: 100ms;
@@ -1215,7 +1330,6 @@
 
         .use-case-card.reveal:nth-child(3),
         .feature-card.reveal:nth-child(3),
-
         .config-block.reveal:nth-child(3),
         .provider-badge.reveal:nth-child(3n) {
             transition-delay: 200ms;
@@ -1223,7 +1337,6 @@
 
         .use-case-card.reveal:nth-child(4),
         .feature-card.reveal:nth-child(4),
-
         .config-block.reveal:nth-child(4),
         .provider-badge.reveal:nth-child(4n) {
             transition-delay: 300ms;
@@ -1231,7 +1344,12 @@
         
         .use-case-card.reveal:nth-child(n+5),
         .feature-card.reveal:nth-child(n+5) {
-            transition-delay: 100ms; /* Reset for next row roughly */
+            transition-delay: 100ms;
+        }
+
+        /* Parallax effect for sections */
+        .parallax-section {
+            transition: transform 0.1s ease-out;
         }
 
         .btn-primary svg {
@@ -1255,7 +1373,7 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-secondary);
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             width: 32px;
             height: 32px;
             display: flex;
@@ -1324,6 +1442,117 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Stats Banner */
+        .stats-banner {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.05) 0%, rgba(14, 165, 233, 0.03) 100%);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            background: rgba(20, 20, 29, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-md);
+            padding: 2.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-item:hover {
+            border-color: rgba(14, 165, 233, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.3);
+            background: rgba(25, 25, 35, 0.8);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .stat-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .stat-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .stats-banner {
+                padding: 4rem 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-item {
+                padding: 2rem;
+            }
+
+            .stat-icon {
+                font-size: 2rem;
+            }
+
+            .stat-value {
+                font-size: 1.25rem;
+            }
+        }
+        }
     </style>
 </head>
 <body>
@@ -1336,35 +1565,44 @@
 
     <header>
         <nav class="nav">
-            <a href="#hero" class="logo">
-                <div class="logo-icon">🐾</div>
-                Paws
-            </a>
-            <div class="nav-links">
-                <a href="#use-cases" class="nav-link">Use Cases</a>
-                <a href="#features" class="nav-link">Features</a>
-                <a href="#cli" class="nav-link">CLI</a>
-                <a href="#antigravity" class="nav-link">Antigravity</a>
+            <a href="#hero" class="logo">Paws</a>
+            <div class="nav-links-container">
+                <div class="nav-links">
+                    <a href="#stats" class="nav-link">Stats</a>
+                    <a href="#use-cases" class="nav-link">Use Cases</a>
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#cli" class="nav-link">CLI</a>
+                    <a href="#antigravity" class="nav-link">Antigravity</a>
+                    <a href="https://github.com/manthanabc/paws" class="nav-link github-link" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:inline-block;vertical-align:middle;width:16px;height:16px;margin-right:0.5rem;"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        GitHub
+                    </a>
+                </div>
+                <button class="mobile-menu-btn" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
-            <button class="mobile-menu-btn" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
         </nav>
         
         <div class="mobile-menu-overlay">
+            <a href="#stats" class="mobile-nav-link">Stats</a>
             <a href="#use-cases" class="mobile-nav-link">Use Cases</a>
             <a href="#features" class="mobile-nav-link">Features</a>
             <a href="#cli" class="mobile-nav-link">CLI</a>
             <a href="#antigravity" class="mobile-nav-link">Antigravity</a>
+            <a href="https://github.com/manthanabc/paws" class="mobile-nav-link" target="_blank" rel="noopener noreferrer">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;margin-right:0.5rem;"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                View on GitHub
+            </a>
         </div>
     </header>
 
     <section class="hero" id="hero">
         <div class="hero-content">
-            <h1 class="reveal">AI-Powered Terminal Assistant</h1>
-            <p class="reveal stagger-1">Code faster, debug smarter, and refactor effortlessly. Paws understands your entire codebase and helps you work without leaving your terminal.</p>
+            <h1 class="reveal parallax-section" data-speed="0.05">AI-Powered Terminal Assistant</h1>
+            <p class="reveal stagger-1 parallax-section" data-speed="0.03">Code faster, debug smarter, and refactor effortlessly. Paws understands your entire codebase and helps you work without leaving your terminal.</p>
             <div class="hero-actions reveal stagger-2">
                 <a href="https://github.com/manthanabc/paws" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
                     <span>Get Started</span>
@@ -1386,7 +1624,7 @@
                 <span class="hero-tag">Open Source</span>
             </div>
         </div>
-        <div class="hero-terminal reveal stagger-3">
+        <div class="hero-terminal reveal-scale parallax-section" data-speed="0.1">
                 <div class="terminal-header">
                     <div class="terminal-dots">
                         <div class="terminal-dot red"></div>
@@ -1413,6 +1651,49 @@
                     </div>
                     <div class="terminal-line">
                         <span class="terminal-prompt">$</span> <span class="terminal-command">paws -p "Add error handling to this function"</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="use-cases" id="use-cases">
+    </section>
+
+    <!-- Stats Banner -->
+    <section class="stats-banner" id="stats">
+        <div class="section-container">
+            <div class="stats-grid">
+                <div class="stat-item reveal">
+                    <div class="stat-icon">🔑</div>
+                    <div class="stat-content">
+                        <div class="stat-label">BYOK Model</div>
+                        <div class="stat-value">Bring Your Own Key</div>
+                        <div class="stat-desc">Use any provider with your API keys</div>
+                    </div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Binary Size</div>
+                        <div class="stat-value">&lt; 99 MB</div>
+                        <div class="stat-desc">Lightweight and fast</div>
+                    </div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-icon">🌐</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Model Support</div>
+                        <div class="stat-value">500+ Models</div>
+                        <div class="stat-desc">From multiple providers</div>
+                    </div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Zero Config</div>
+                        <div class="stat-value">Ready in Seconds</div>
+                        <div class="stat-desc">Just add your API key</div>
                     </div>
                 </div>
             </div>
@@ -1673,7 +1954,7 @@ FORGE_SHOW_TASK_STATS=true</code></pre>
                 <p class="section-subtitle">Connect AI agents to external tools and services</p>
             </div>
             <div class="mcp-content">
-                <div class="mcp-text reveal">
+                <div class="mcp-text reveal-left">
                     <p>MCP allows Paws to communicate with external systems, enabling web browser automation, API interactions, and custom service integrations.</p>
                     <h3>CLI Commands</h3>
                     <div class="mcp-commands">
@@ -1684,7 +1965,7 @@ FORGE_SHOW_TASK_STATS=true</code></pre>
                         <div class="mcp-command">paws mcp remove - Remove a server</div>
                     </div>
                 </div>
-                <div class="mcp-code-block reveal">
+                <div class="mcp-code-block reveal-right">
                     <h4>.mcp.json</h4>
 <pre><span class="comment">// MCP server configuration</span>
 {
@@ -1715,7 +1996,7 @@ FORGE_SHOW_TASK_STATS=true</code></pre>
                 <p class="section-subtitle">Route AI API requests through a centralized proxy service</p>
             </div>
             <div class="mcp-content">
-                <div class="mcp-text reveal">
+                <div class="mcp-text reveal-left">
                     <p>Antigravity Claude Proxy is a proxy server that exposes an Anthropic-compatible API backed by Antigravity's Cloud Code, allowing you to use Claude and Gemini models.</p>
                     <h3>Installation and Setup</h3>
                     <div class="mcp-commands">
@@ -1723,12 +2004,11 @@ FORGE_SHOW_TASK_STATS=true</code></pre>
                         <div class="mcp-command">antigravity-claude-proxy accounts add</div>
                         <div class="mcp-command">antigravity-claude-proxy start</div>
                     </div>
-                    <p style="margin-top: 2rem;">The proxy runs on <code style="background: rgba(255,255,255,0.1); padding: 0.25rem 0.5rem; border-radius: 4px;">http://localhost:8080</code> by default.</p>
+                    <p style="margin-top: 2rem;">The proxy runs on <code style="background: rgba(255,255,255,0.1); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm);">http://localhost:8080</code> by default.</p>
                 </div>
-                <div class="mcp-code-block reveal">
+                <div class="mcp-code-block reveal-right">
                     <h4>Configure Paws</h4>
-<pre><span class="comment"># Provider login from Paws</span>
-<span class="key">$</span> paws provider login
+<pre><span class="key">$</span> paws provider login
 
 <span class="comment"># Set base URL to use Antigravity proxy</span>
 <span class="key">$</span> export ANTHROPIC_BASE_URL=<span class="string">"http://localhost:8080"</span>
@@ -1745,7 +2025,8 @@ FORGE_SHOW_TASK_STATS=true</code></pre>
 
 <span class="comment"># Check account status and quota</span>
 <span class="key">$</span> curl <span class="string">"http://localhost:8080/account-limits?format=table"</span></pre>
-<span class="key">providers</span>:
+                    <h4 style="margin-top: 2rem;">Config File</h4>
+<pre><span class="key">providers</span>:
   <span class="key">openai</span>:
     <span class="key">api_key</span>: <span class="string">"dummy-key"</span>
     <span class="key">base_url</span>: <span class="string">"http://localhost:3000/openai/v1"</span>
@@ -1796,8 +2077,29 @@ $ antigravity proxy stop</pre>
             });
         }, observerOptions);
 
-        document.querySelectorAll('.reveal').forEach(el => {
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
             observer.observe(el);
+        });
+
+        // Parallax effect
+        let ticking = false;
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrolled = window.pageYOffset;
+                    const parallaxElements = document.querySelectorAll('.parallax-section');
+                    
+                    parallaxElements.forEach(el => {
+                        const speed = el.dataset.speed || 0.3;
+                        el.style.transform = `translateY(${scrolled * speed}px)`;
+                    });
+                    
+                    ticking = false;
+                });
+                
+                ticking = true;
+            }
         });
         
         // Terminal typing effect
@@ -1811,7 +2113,16 @@ $ antigravity proxy stop</pre>
         // Back to top
         const backToTopBtn = document.getElementById('backToTop');
         
+        // Header scroll effect
+        const header = document.querySelector('header');
+        
         window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
             if (window.scrollY > 500) {
                 backToTopBtn.classList.add('visible');
             } else {
