@@ -26,8 +26,8 @@
             --accent: #ec4899;
             --accent-hover: #db2777;
             --accent-glow: rgba(236, 72, 153, 0.4);
-            --border: rgba(236, 72, 153, 0.2);
-            --border-light: rgba(236, 72, 153, 0.1);
+            --border: transparent;
+            --border-light: transparent;
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
@@ -42,7 +42,7 @@
         html {
             scroll-behavior: smooth;
             scroll-padding-top: calc(var(--header-height) + 2rem);
-            cursor: none; /* Hide default cursor for custom one */
+            cursor: none;
         }
 
         body {
@@ -77,13 +77,15 @@
             width: 8px;
             height: 8px;
             background-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
         }
 
         .cursor-outline {
             width: 40px;
             height: 40px;
             border: 2px solid var(--accent);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+            mix-blend-mode: difference;
         }
         
         body:hover .cursor-outline {
@@ -291,7 +293,6 @@
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(236, 72, 153, 0.1);
             box-shadow: 0 4px 20px rgba(236, 72, 153, 0.1);
         }
 
@@ -330,7 +331,6 @@
             background: rgba(255, 255, 255, 0.4);
             padding: 0.4rem;
             border-radius: var(--radius-md);
-            border: 1px solid rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
@@ -441,22 +441,21 @@
 
         .btn-primary:hover {
             background: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px -8px var(--accent-glow);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 15px 30px -8px var(--accent-glow);
         }
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(236, 72, 153, 0.2);
             color: var(--text-primary);
             backdrop-filter: blur(5px);
         }
 
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.8);
-            border-color: rgba(236, 72, 153, 0.4);
             color: var(--text-primary);
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(236, 72, 153, 0.1);
         }
 
         .hero-tags {
@@ -467,7 +466,6 @@
 
         .hero-tag {
             background: rgba(255, 255, 255, 0.4);
-            border: 1px solid var(--border);
             padding: 0.625rem 1.25rem;
             border-radius: var(--radius-md);
             font-size: 0.875rem;
@@ -476,6 +474,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            box-shadow: 0 4px 10px rgba(236, 72, 153, 0.05);
         }
 
         .hero-tag::before {
@@ -503,18 +502,17 @@
             text-decoration: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: none; /* Custom cursor */
-            border: 1px solid rgba(236, 72, 153, 0.4);
             background: rgba(236, 72, 153, 0.1);
             color: var(--text-primary);
             backdrop-filter: blur(5px);
             font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+            border: 1px solid transparent;
         }
 
         .btn-install:hover {
             background: rgba(236, 72, 153, 0.2);
-            border-color: rgba(236, 72, 153, 0.6);
             color: var(--text-primary);
-            transform: translateY(-2px);
+            transform: translateY(-2px) rotate(-1deg);
             box-shadow: 0 8px 20px -4px rgba(236, 72, 153, 0.3);
         }
 
@@ -524,7 +522,6 @@
 
         .btn-install.copied {
             background: var(--success);
-            border-color: var(--success);
             color: white;
         }
 
@@ -606,7 +603,6 @@
             margin-bottom: 1.5rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            border: 1px solid rgba(236, 72, 153, 0.15);
             box-shadow: 0 4px 10px rgba(236, 72, 153, 0.1);
         }
 
@@ -641,7 +637,6 @@
 
         .use-case-card {
             background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: var(--radius-lg);
             padding: 3rem;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -651,6 +646,7 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 10px 30px -10px rgba(236, 72, 153, 0.05);
         }
 
         .use-case-card::before {
@@ -659,10 +655,10 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 2px;
+            height: 4px;
             background: linear-gradient(90deg, var(--accent), var(--accent-hover));
             transform: scaleX(0);
-            transform-origin: left;
+            transform-origin: center;
             transition: transform 0.4s ease;
         }
 
@@ -671,10 +667,9 @@
         }
 
         .use-case-card:hover {
-            border-color: rgba(236, 72, 153, 0.25);
-            transform: translateY(-8px);
-            box-shadow: 0 24px 48px -12px rgba(236, 72, 153, 0.15);
-            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 24px 48px -12px rgba(236, 72, 153, 0.2);
+            background: rgba(255, 255, 255, 0.7);
         }
 
         .use-case-icon {
@@ -687,9 +682,13 @@
             justify-content: center;
             font-size: 2rem;
             margin-bottom: 2rem;
-            border: 1px solid rgba(236, 72, 153, 0.15);
             color: var(--text-primary);
             box-shadow: 0 8px 16px -4px rgba(236, 72, 153, 0.1);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .use-case-card:hover .use-case-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .use-case-title {
@@ -709,16 +708,15 @@
         }
 
         .use-case-example {
-            background: #0c0c11;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.5);
             border-left: 3px solid var(--accent);
             padding: 1.25rem 1.5rem;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
-            color: #cbd5e1;
+            color: var(--text-primary);
             border-radius: var(--radius-sm);
             overflow-x: auto;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
         /* Features */
@@ -735,37 +733,23 @@
 
         .feature-card {
             background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: var(--radius-md);
             padding: 2.5rem;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             height: 100%;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 20px -5px rgba(236, 72, 153, 0.05);
         }
 
         .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-hover));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-
-        .feature-card:hover::before {
-            transform: scaleX(1);
+            display: none;
         }
 
         .feature-card:hover {
-            border-color: rgba(236, 72, 153, 0.3);
-            background: rgba(236, 72, 153, 0.04);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px -10px rgba(236, 72, 153, 0.15);
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 20px 40px -10px rgba(236, 72, 153, 0.15);
         }
 
         .feature-icon {
@@ -778,16 +762,15 @@
             justify-content: center;
             font-size: 1.6rem;
             margin-bottom: 1.5rem;
-            border: 1px solid rgba(236, 72, 153, 0.1);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--accent);
         }
 
         .feature-card:hover .feature-icon {
             background: var(--accent);
             color: white;
-            border-color: var(--accent);
-            transform: scale(1.05) rotate(3deg);
-            box-shadow: 0 8px 16px -4px var(--accent-glow);
+            transform: scale(1.2) rotate(-10deg);
+            box-shadow: 0 8px 20px -4px var(--accent-glow);
         }
 
         .feature-name {
@@ -813,7 +796,6 @@
 
         .cli-table-container {
             background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: var(--radius-lg);
             overflow: hidden;
             overflow-x: auto;
@@ -831,7 +813,7 @@
         .cli-table td {
             padding: 1.5rem 2.5rem;
             text-align: left;
-            border-bottom: 1px solid rgba(236, 72, 153, 0.1);
+            border-bottom: 1px solid rgba(236, 72, 153, 0.05);
         }
 
         .cli-table th {
@@ -872,7 +854,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.1), transparent);
         }
 
         .providers-grid {
@@ -888,7 +870,6 @@
 
         .provider-badge {
             background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.6);
             padding: 0.85rem 1.75rem;
             border-radius: var(--radius-md);
             font-size: 1rem;
@@ -897,14 +878,14 @@
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             cursor: default;
             backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(236, 72, 153, 0.05);
         }
 
         .provider-badge:hover {
-            border-color: var(--accent);
             color: var(--text-primary);
-            background: rgba(236, 72, 153, 0.15);
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.15);
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-3px) scale(1.05) rotate(2deg);
+            box-shadow: 0 15px 30px -5px rgba(236, 72, 153, 0.15);
         }
 
         /* Configuration */
@@ -921,16 +902,16 @@
 
         .config-block {
             background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: var(--radius-lg);
             padding: 3rem;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px -5px rgba(236, 72, 153, 0.05);
         }
 
         .config-block:hover {
             transform: translateY(-6px);
-            border-color: rgba(236, 72, 153, 0.2);
+            background: rgba(255, 255, 255, 0.8);
             box-shadow: 0 20px 40px -10px rgba(236, 72, 153, 0.15);
         }
 
@@ -958,9 +939,9 @@
             border-radius: var(--radius-sm);
             color: var(--text-secondary);
             overflow-x: auto;
-            border: 1px solid rgba(236, 72, 153, 0.1);
+            border: 1px solid rgba(236, 72, 153, 0.05);
             line-height: 1.7;
-            box-shadow: inset 0 2px 4px rgba(236, 72, 153, 0.05);
+            box-shadow: inset 0 2px 4px rgba(236, 72, 153, 0.02);
         }
 
         .config-content code {
@@ -971,7 +952,7 @@
         .mcp-section {
             background: var(--bg-secondary);
             padding: 10rem 2rem;
-            border-top: 1px solid rgba(236, 72, 153, 0.1);
+            border-top: 1px solid rgba(236, 72, 153, 0.05);
         }
 
         .mcp-content {
@@ -1010,16 +991,18 @@
             background: rgba(255, 255, 255, 0.4);
             padding: 1.1rem 1.5rem;
             border-radius: var(--radius-sm);
-            border: 1px solid rgba(236, 72, 153, 0.1);
+            border: 1px solid transparent;
             overflow-x: auto;
             display: flex;
             align-items: center;
             transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(236, 72, 153, 0.05);
         }
 
         .mcp-command:hover {
-            border-color: rgba(236, 72, 153, 0.3);
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.1);
         }
 
         .mcp-command::before {
@@ -1031,7 +1014,6 @@
 
         .mcp-code-block {
             background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(236, 72, 153, 0.1);
             border-radius: var(--radius-lg);
             padding: 2.5rem;
             font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
@@ -1083,34 +1065,75 @@
         /* Footer */
         footer {
             padding: 8rem 2rem 4rem;
-            border-top: 1px solid rgba(236, 72, 153, 0.1);
-            text-align: center;
             background: var(--bg-primary);
+            border-top: 1px solid rgba(236, 72, 153, 0.05);
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .footer-left h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .footer-left p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 400px;
+            line-height: 1.7;
         }
 
         .footer-links {
             display: flex;
-            justify-content: center;
-            gap: 4rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: flex-end;
+            align-items: flex-start;
         }
 
-        .footer-link {
+        .footer-col h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col a {
+            display: block;
             color: var(--text-secondary);
             text-decoration: none;
-            font-weight: 500;
+            margin-bottom: 1rem;
             transition: all 0.2s;
-            font-size: 1.05rem;
+            font-size: 1rem;
         }
 
-        .footer-link:hover,
-        .footer-link:focus {
+        .footer-col a:hover {
             color: var(--accent);
+            transform: translateX(5px);
         }
 
-        .footer-text {
-            color: rgba(131, 24, 67, 0.5);
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(236, 72, 153, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-tertiary);
             font-size: 0.9rem;
         }
 
@@ -1444,7 +1467,6 @@
 
         .stat-item {
             background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: var(--radius-md);
             padding: 2.5rem;
             display: flex;
@@ -1454,6 +1476,7 @@
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 12px -2px rgba(236, 72, 153, 0.05);
         }
 
         .stat-item::before {
@@ -1474,16 +1497,20 @@
         }
 
         .stat-item:hover {
-            border-color: rgba(236, 72, 153, 0.3);
             transform: translateY(-5px);
             box-shadow: 0 15px 30px -10px rgba(236, 72, 153, 0.15);
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.8);
         }
 
         .stat-icon {
             font-size: 2.5rem;
             line-height: 1;
             flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .stat-item:hover .stat-icon {
+            transform: scale(1.2) rotate(10deg);
         }
 
         .stat-content {
@@ -2069,12 +2096,32 @@ $ antigravity proxy stop</pre>
     </button>
 
     <footer>
-        <div class="footer-links">
-            <a href="https://github.com/manthanabc/paws" class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://github.com/manthanabc/paws/blob/main/README.md" class="footer-link" target="_blank" rel="noopener noreferrer">Documentation</a>
-            <a href="https://github.com/antimonyhq/forge" class="footer-link" target="_blank" rel="noopener noreferrer">Original Forge</a>
+        <div class="footer-content">
+            <div class="footer-left">
+                <h3>paws</h3>
+                <p>The AI-powered terminal assistant that helps you write code, execute commands, and manage your projects with ease.</p>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Project</h4>
+                    <a href="https://github.com/manthanabc/paws" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <a href="https://github.com/manthanabc/paws/releases" target="_blank" rel="noopener noreferrer">Releases</a>
+                    <a href="https://github.com/manthanabc/paws/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License</a>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <a href="https://github.com/manthanabc/paws/blob/main/README.md" target="_blank" rel="noopener noreferrer">Documentation</a>
+                    <a href="https://github.com/antimonyhq/forge" target="_blank" rel="noopener noreferrer">Original Forge</a>
+                </div>
+            </div>
         </div>
-        <p class="footer-text">Paws — AI Terminal Assistant for Developers &copy; <span id="year">2025</span></p>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="year">2025</span> Paws. All rights reserved.</p>
+            <p>Designed with <span style="color: var(--accent);">♥</span> for developers</p>
+        </div>
     </footer>
 
     <script>
@@ -2270,9 +2317,21 @@ $ antigravity proxy stop</pre>
     </script>
     <script src="/assets/asciinema-player.min.js"></script>
     <script>
-        AsciinemaPlayer.create('/assets/766613.cast', document.getElementById('asciinema-player'), {
-            autoPlay: true,
-            loop: true,
+        document.addEventListener('DOMContentLoaded', function() {
+            const playerElement = document.getElementById('asciinema-player');
+            if (typeof AsciinemaPlayer !== 'undefined' && playerElement) {
+                try {
+                    AsciinemaPlayer.create('/assets/766613.cast', playerElement, {
+                        autoPlay: true,
+                        loop: true,
+                        theme: 'dracula' // Fits better with dark terminal aesthetic
+                    });
+                } catch (e) {
+                    console.error('Failed to initialize AsciinemaPlayer:', e);
+                }
+            } else {
+                console.warn('AsciinemaPlayer not loaded or element not found');
+            }
         });
     </script>
 </body>
