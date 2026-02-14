@@ -51,6 +51,8 @@ npm install -g @paws/cli
 
 ## 🔐 Running with Antigravity Proxy
 
+> **⚠️ WARNING**: Using Antigravity proxy voids Google's Terms of Service and may result in your Google account being disabled. Please use a dummy account only.
+
 Antigravity is a proxy service that allows you to route AI API requests through a centralized account management system.
 
 ### Installation and Setup
@@ -125,6 +127,8 @@ antigravity proxy stop
 ```
 
 ## 🔐 Running with Antigravity Proxy
+
+> **⚠️ WARNING**: Using Antigravity proxy voids Google's Terms of Service and may result in your Google account being disabled. Please use a dummy account only.
 
 Antigravity Claude Proxy is a proxy server that exposes an Anthropic-compatible API backed by Antigravity's Cloud Code, allowing you to use Claude and Gemini models.
 
